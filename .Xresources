@@ -1,0 +1,42 @@
+URxvt*depth	              : 32 
+URxvt*saveLines	              : 12000
+URxvt*foreground              : rgba:7777/cccc/7777/ffff
+URxvt*background              : rgba:0000/0000/0000/cccc
+URxvt*font	              : xft:DejaVu Sans Mono:pixelsize=20:antialias=true:hinting=true
+URxvt*boldFont	              : xft:DejaVu Sans Mono:bold:pixelsize=20:antialias=true:hinting=true
+URxvt*color4		      : RoyalBlue 
+URxvt*color12		      : RoyalBlue
+
+!color of the standard input
+URxvt*color10		      : rgba:2222/5555/2222/ffff
+URxvt*color2		      : rgba:4444/9999/4444/ffff
+
+URxvt*scrollBar		      : true
+URxvt*scrollBar_right	      : true
+URxvt*scrollstyle	      : plain
+URxvt*scrollColor	      : rgba:4444/4444/4444/ffff
+URxvt*cursorBlink	      : true
+emacs*borderWidth	      : 2
+
+URxvt.keysym.Meta-w	      : eval: selection_to_clipboard
+URxvt.keysym.Control-y	      : eval: paste_clipboard
+URxvt.keysym.Control-Meta-c   : builtin-string:
+URxvt.keysym.Control-Meta-v   : builtin-string:
+
+!-*- Perl extensions -*-
+URxvt.perl-ext-common         : default,tabbed,font-size
+URxvt.keysym.M-u              : perl:url-select:select_next
+URxvt.url-launcher            : /usr/bin/chromium
+URxvt.underlineURLs           : True
+URxvt.matcher.button          : 1 
+URxvt.keysym.M-Escape         : perl:keyboard-select:activate
+
+URxvt.keysym.C-Up             : font-size:increase
+URxvt.keysym.C-Down           : font-size:decrease
+URxvt.keysym.C-S-Up	      : font-size:incglobal
+URxvt.keysym.C-S-Down         : font-size:decglobal
+URxvt.keysym.C-equal          : font-size:reset
+URxvt.keysym.C-slash	      : font-size:show
+
+!other stuff
+Xft.dpi: 120
