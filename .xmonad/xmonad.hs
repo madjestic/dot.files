@@ -16,24 +16,28 @@ import XMonad.Layout.BinarySpacePartition
 import XMonad.Layout.Fullscreen
 import XMonad.Layout.Renamed
 import XMonad.Layout.Circle
+import XMonad.Layout.Hidden
 import qualified XMonad.StackSet as W
 import XMonad.Hooks.SetWMName
 
 myLayout =
   renamed [CutWordsLeft 1]
   $ avoidStruts
-  $ spacing 0
+  $ spacing 5
   $   bsp
-  ||| Circle
-  ||| Full
+  ||| circle 
+  ||| full
   where       
-        bsp    = renamed [Replace "BSP"] emptyBSP
+    bsp    = renamed [Replace "BSP"]    $ hiddenWindows emptyBSP
+    circle = renamed [Replace "Circle"] $ hiddenWindows Circle
+    full   = renamed [Replace "Full"]   $ hiddenWindows Full
 
 ewmh :: XConfig a -> XConfig a
 ewmh c = c { startupHook     = startupHook c     <+> setWMName "LG3D"
            , logHook         = logHook c
            }        
-       
+
+main :: IO ()         
 main = do
      xmproc <- spawnPipe "/usr/bin/xmobar ~/.xmobarrc"
      xmonad
@@ -47,7 +51,7 @@ main = do
                                     }
                  , terminal   = "urxvt"
                  , modMask    = mod4Mask
-                 , focusedBorderColor   = "#444444" --"SeaGreen"
+                 , focusedBorderColor   = "#444444"
                  , normalBorderColor    = "SeaGreen"
                  , borderWidth          = 1
                  }
@@ -70,6 +74,8 @@ main = do
                  , ((mod4Mask .|. shiftMask, xK_j     ), windows W.swapDown  )
                  , ((mod4Mask .|. shiftMask, xK_k     ), windows W.swapUp    )
                  , ((mod4Mask, xK_g), goToSelected def)
+                 , ((mod4Mask, xK_backslash), withFocused hideWindow)
+                 , ((mod4Mask .|. shiftMask, xK_backslash), popOldestHiddenWindow)                 
                  ]
              `additionalKeysP`
                  [ ("<XF86AudioMute>"        , spawn "amixer set Master toggle")
@@ -77,25 +83,25 @@ main = do
                  , ("<XF86AudioRaiseVolume>" , spawn "amixer set Master 5%+")
                  , ("<XF86MonBrightnessDown>", spawn "/home/madjestic/bin/brightnessdown")
                  , ("<XF86MonBrightnessUp>"  , spawn "/home/madjestic/bin/brightnessup")
-                 , ("M-S-,"                  , spawn "playerctl previous")
-                 , ("M-S-."                  , spawn "playerctl next")
-                 , ("M-S-/"                  , spawn "playerctl play-pause")
-                 --, ("M-C-c"                  , spawn "chromium")
+                 , ("<XF86AudioPlay>"        , spawn "playerctl play-pause")
+                 , ("<XF86AudioNext>"        , spawn "playerctl next")
+                 , ("<XF86AudioPrev>"        , spawn "playerctl previous")
                  , ("M-C-c"                  , spawn "google-chrome-stable")
-                 , ("M-C-f"                  , spawn "firefox")
+                 , ("M-C-f"                  , spawn "firefox-bin")
                  , ("M-S-C-e"                , spawn "emacs")
                  , ("M-C-e"                  , spawn "emacsclient -c")
-                 , ("M-C-k"                  , spawn "krusader")
-                 , ("M-C-d"                  , spawn "dolphin")
-                 --, ("M-C-s"                  , spawn "spotify")
-                 , ("<Print>"                , spawn "spectacle") -- should be "screen", but that does not seem to work
                  , ("M-C-<Esc>"              , spawn "htop")
                  , ("M-C-l"                  , spawn "slock")
                  , ("M-C-h"                  , spawn "houdini")
                  , ("M-i"                    , spawn "xcalib -invert -alter")
-                 , ("M-C-r"                  , spawn "rofirun")
-                 , ("M-M1-p"                 , spawn "rofirun") -- like dmenu, but with Alt
-                 , ("M-<Print>"              , spawn "screen")
+                 , ("M-p"                    , spawn "/home/madjestic/bin/dmenu")
+                 , ("M-M1-p"                    , spawn "/home/madjestic/bin/rofirun.sh")
+                 --, ("M-C-p"                  , spawn "rofirun")
+                 --, ("M-M1-p"                 , spawn "rofirun") -- like dmenu, but with Alt
+                 --, ("M-<Print>"              , spawn "screen")
+                 , ("M-<Print>"              , spawn "scrot -l style=solid,width=1,opacity=100 -s ~/Screenshots/%b%d::%H%M%S.png")
+                 --alias myscrot='scrot ~/Screenshots/%b%d::%H%M%S.png'
+                 , ("M-C-<Print>"            , spawn "scrot ~/Screenshots/%b%d::%H%M%S.png")
                  , ("M-s"           , sendMessage $ Swap)
                  , ("M-M1-s"        , sendMessage $ Rotate)
                  , ("M-r"           , sendMessage $ RotateL)
@@ -110,4 +116,4 @@ main = do
                  , ("M-M1-<Right>"  , sendMessage $ ShrinkFrom L)
                  , ("M-M1-<Up>"     , sendMessage $ ExpandTowards U)
                  , ("M-M1-<Down>"   , sendMessage $ ShrinkFrom U)
-                 ]              
+                 ]

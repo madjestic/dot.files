@@ -1,49 +1,75 @@
-Config { font         = "xft:DejaVu Sans Mono:size=10:antialias=true"
+Config { font            = "DejaVu Sans Mono 12"
+       , additionalFonts =
+           [ "Mononoki Nerd Font 12"
+           , "Mononoki Nerd Font Mono 18"
+           , "Mononoki Nerd Font Mono 11"
+           ]
        , borderColor  = "black"
        , border       = TopB
        , bgColor      = "black"
-       , fgColor      = "grey"
+       , fgColor      = "LightGrey"
        , position     = Top
        , lowerOnStart = True
+       , iconRoot     = "/home/madjestic/.icons"
        , commands     =
          [
-         --   Run Network "wlp166s0"
-         --   ["-t","<fc=#aaaaaa><icon=.icons/net_down_03.xbm/></fc><rx><fc=#aaaaaa><icon=.icons/net_up_03.xbm/></fc><tx>"
-         --   ,"-L","500"
-         --   ,"-H","40000"
-         --   ,"-l","SeaGreen"
-         --   ,"-h","red"
-         --   ,"-n","SpringGreen"] 10
-         -- , Run Com "/home/madjestic/bin/get_wireless.sh" [] "wifi" 30
-           Run Cpu
-           ["-t","<fc=#aaaaaa><icon=.icons/cpu.xbm/></fc><total>%"
-           ,"-L","3"
-           ,"-H","50"
-           ,"--normal","#77cc77"
-           ,"--high","red"] 10
+           Run Network "wlp166s0" 
+           ["-t","<rx><fc=#aaaaaa><icon=net_down_03.xbm/></fc><tx><fc=#aaaaaa><icon=net_up_03.xbm/></fc>"             
+           ,"-L","500000"
+           ,"-H","1500000"
+           ,"-l","SeaGreen"
+           ,"-h","red"
+           ,"-n","SpringGreen"
+           ,"--padchars", " .."
+           ,"-w", "4"
+           ] 10
+         , Run Com "/home/madjestic/bin/get_wireless.sh" [] "wifi" 30
+         , Run Cpu
+           ["-t","<fc=#aaaaaa><icon=cpu_sp.xbm/></fc><total>%"
+           ,"-L"        ,"3"
+           ,"-H"        ,"50"
+           ,"--low"     ,"SeaGreen"
+           ,"--normal"  ,"SpringGreen"
+           ,"--high"    ,"red"
+           ,"-p"        ,"2"
+           ,"--padchars"," "
+           ] 10
          , Run Memory
-           ["-t","<fc=#aaaaaa><icon=.icons/mem.xbm/></fc><usedratio>%"
+           ["-t","<fc=#aaaaaa><icon=mem.xbm/></fc><usedratio>%"
            ,"-L","50"
            ,"-H","85"
            ,"-n","SpringGreen"
            ,"-l","SeaGreen"
-           ,"-h","red"] 10
+           ,"-h","red"
+           ,"-p", "2"
+           ,"--padchars", " "
+           ] 10
          , Run Swap              [] 10
          , Run Com "uname"       ["-s","-r"] "" 36000
          , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
          , Run StdinReader
          , Run BatteryP
            ["BAT1"]
-           ["-t", "<fc=#aaaaaa><acstatus></fc><watts> <left>% <timeleft>"
-           ,"--"
-           ,"-O", "<fc=#ff7f00><icon=.icons/ac.xbm/></fc>"
-           ,"-i", "<fc=#00ff7f><icon=.icons/ac_01.xbm/></fc>"
-           ,"-o", "<icon=.icons/bat_full_01.xbm/>"
-           ] 100
+           [ "-t", "<fc=#aaaaaa><acstatus></fc>"
+           , "-L", "15"
+	   , "-H", "75"
+	   , "-l", "darkred"
+	   , "-n", "#ee9a00"
+	   , "-h", "SeaGreen"
+	   , "--" -- battery specific options
+	   -- discharging status 
+           --, "-o"  , "<fn=3>\xf578</fn> <left>% <watts>"
+           , "-o"  , "<fn=3>\xf578</fn> <left>%"
+	   -- AC "on" status
+	   , "-O"  , "<fn=2>\xf584</fn> <left>%"
+	   -- charged status
+	   , "-i"  , "<fc=SeaGreen><fn=3>\xf583</fn> <left>%</fc>"
+	   , "--off-icon-pattern", "<fn=3>\xf1e6</fn>"
+	   , "--on-icon-pattern", "<fn=3>\xf1e6</fn>"
+	   ] 30
          , Run Com "/home/madjestic/bin/get_volume.sh" [] "default:Master" 10
          ]
        , sepChar = "%"
        , alignSep = "}{"
-       --, template = "%StdinReader% } %cpu% | %memory% | %wlp4s0% | %wifi% | %default:Master% | %battery% { <fc=#ee9a00>%date%</fc> | %uname%"
-       , template = "%StdinReader% } %cpu% | %memory% | %default:Master% | %battery% { <fc=#ee9a00>%date%</fc> | %uname%"
+       , template = "<fc=#00ff7f><action=`/home/madjestic/bin/dmenu`><icon=haskell.xbm/></action></fc> %StdinReader% }{ <action=`urxvt -e htop`>%cpu%</action> <action=`urxvt -e htop`>%memory%</action> <action=`urxvt -e nmtui`>%wifi% %wlp166s0%</action> %default:Master% <action=`urxvt -e sudo powertop`>%battery%</action> %date% <fc=#00ff7f><action=`urxvt -e /home/madjestic/bin/neofetch`><icon=gentoo_logo.xbm/>%uname%</action></fc>"
        }

@@ -17,6 +17,7 @@ fi
 
 # Put your fun stuff here.
 export PATH=$PATH:~/.cabal/bin:~/bin:~/.local/bin:/usr/local/lib
+export PATH=$PATH:~/.local/share/fonts
 export GIT_EDITOR=emacs
 
 export PROJECTS=~/Projects
@@ -28,3 +29,12 @@ alias xterm="xterm -fa \"DejaVu\ Sans\ Mono:pixelsize=15\""
 alias ec="emacsclient -c"
 
 [ -f "/home/madjestic/.ghcup/env" ] && source "/home/madjestic/.ghcup/env" # ghcup-env
+
+#export LANG="ru_RU.iso88595"
+#export LANG="ru_RU.utf8"
+#export LC_COLLATE="C.UTF-8"
+
+export LIBVA_DRIVER_NAME="iHD"
+
+# refresh icon cache
+# fc-cache -fv

@@ -11,3 +11,5 @@ export ALTERNATE_EDITOR=""
 export EDITOR=emacsclient
 
 exec dbus-launch --sh-syntax --exit-with-session xmonad
+# exec dbus-launch --sh-syntax --exit-with-session openbox
+# echo '1' > '/sys/module/snd_hda_intel/parameters/power_save'

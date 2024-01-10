@@ -40,3 +40,4 @@ URxvt.keysym.C-slash	      : font-size:show
 
 !other stuff
 Xft.dpi: 120
+URxvt.geometry                : 400x400
